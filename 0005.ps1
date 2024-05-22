@@ -2,22 +2,12 @@
 Write-Host "Starting the installation script for Edbot"
 Write-Host "Git Clone the Edbot Repository"
 
-#$credentials = Get-Credential -Message "Please enter your credentials"
+# Prompt the user for their GitHub Personal Access Token
 $credentials = Read-Host "Enter your GitHub Personal Access Token"
 
+# Specify the GitHub repository details
 $repo = "panelresources/edbot"
 $targetDirectory = "$env:USERPROFILE\Documents\GitHub\edbot"
-
-
-New-Item -ItemType Directory -Path $targetDirectory
-
-# Check if the directory was created successfully
-if (Test-Path $targetDirectory) {
-    Write-Host "Directory created successfully at $targetDirectory"
-} else {
-    Write-Host "Failed to create the directory"
-}
-
 
 # Get the list of files and directories recursively
 $treeUrl = "https://api.github.com/repos/$repo/git/trees/main?recursive=1"
@@ -28,11 +18,18 @@ foreach ($item in $response.tree) {
         # Construct the local file path
         $localFilePath = Join-Path -Path $targetDirectory -ChildPath $item.path
 
+        # Create the directory if it doesn't exist
+        $directory = [System.IO.Path]::GetDirectoryName($localFilePath)
+        if (-not (Test-Path -Path $directory)) {
+            New-Item -ItemType Directory -Path $directory | Out-Null
+        }
+
         # Download files
         $downloadUrl = "https://raw.githubusercontent.com/$repo/main/$($item.path)"
         Invoke-WebRequest -Uri $downloadUrl -Headers @{ "Authorization" = "token $credentials" } -OutFile $localFilePath
     }
 }
+
 Write-Host "All files downloaded successfully to $targetDirectory!"
 
 
