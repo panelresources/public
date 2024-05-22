@@ -1,4 +1,4 @@
-# Display some text
+# Starting the installation script for Edbot
 Write-Host "Starting the installation script for Edbot"
 
 
