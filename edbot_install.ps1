@@ -52,7 +52,7 @@ wsl --install
 # Set WSL 2 as the default version
 wsl --set-default-version 2
 wsl --install -d Ubuntu-22.04
-#wsl --set-default Ubuntu-22.04
+wsl --set-default Ubuntu-22.04
 
 
 Write-Host "Download and Install Docker Desktop"
@@ -80,5 +80,7 @@ $imageName = "edbot_test"
 
 $env:Path += ";C:\Program Files\Docker\Docker\resources\bin\"
 # Build the Docker image
-docker build -t $imageName -f $dockerfilePath .
-docker run -it --rm -d -v $env:USERPROFILE\Documents\GitHub\edbot\:/app -v \wsl.localhost\Ubuntu-22.04\mnt\wslg:/tmp -p 80:80 -p 1883:1883 -p 9001:9001 edbot_test
+#docker build -t $imageName -f $dockerfilePath .
+#docker run -it --rm -d -v $env:USERPROFILE\Documents\GitHub\edbot\:/app -v \wsl.localhost\Ubuntu-22.04\mnt\wslg:/tmp -p 80:80 -p 1883:1883 -p 9001:9001 edbot_test
+
+Write-Host "Please restart the PC, then run Post-Install script"
