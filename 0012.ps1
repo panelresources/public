@@ -43,7 +43,8 @@ Remove-Item -Path $zipFilePath
 
 Write-Host "Repository downloaded, extracted, and top-level directory renamed to 'edbot' successfully!"
 
-
+dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
+dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
 
 # Install WSL 2
 wsl --install
