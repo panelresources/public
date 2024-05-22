@@ -13,20 +13,37 @@ $targetDirectory = "$env:USERPROFILE\Documents\GitHub\edbot"
 $treeUrl = "https://api.github.com/repos/$repo/git/trees/main?recursive=1"
 $response = Invoke-WebRequest -Uri $treeUrl -Headers @{ "Authorization" = "token $credentials" } | ConvertFrom-Json
 
-foreach ($item in $response.tree) {
-    if ($item.type -eq "blob") {
-        # Construct the local file path
-        $localFilePath = Join-Path -Path $targetDirectory -ChildPath $item.path
+# Initialize a flag to track whether all files have been downloaded
+$allFilesDownloaded = $false
 
-        # Create the directory if it doesn't exist
-        $directory = [System.IO.Path]::GetDirectoryName($localFilePath)
-        if (-not (Test-Path -Path $directory)) {
-            New-Item -ItemType Directory -Path $directory | Out-Null
+while (-not $allFilesDownloaded) {
+    foreach ($item in $response.tree) {
+        if ($item.type -eq "blob") {
+            # Construct the local file path
+            $localFilePath = Join-Path -Path $targetDirectory -ChildPath $item.path
+
+            # Create the directory if it doesn't exist
+            $directory = [System.IO.Path]::GetDirectoryName($localFilePath)
+            if (-not (Test-Path -Path $directory)) {
+                New-Item -ItemType Directory -Path $directory | Out-Null
+            }
+
+            # Download files
+            $downloadUrl = "https://raw.githubusercontent.com/$repo/main/$($item.path)"
+            Invoke-WebRequest -Uri $downloadUrl -Headers @{ "Authorization" = "token $credentials" } -OutFile $localFilePath
         }
+    }
 
-        # Download files
-        $downloadUrl = "https://raw.githubusercontent.com/$repo/main/$($item.path)"
-        Invoke-WebRequest -Uri $downloadUrl -Headers @{ "Authorization" = "token $credentials" } -OutFile $localFilePath
+    # Check if all files have been downloaded
+    $allFilesDownloaded = $true
+    foreach ($item in $response.tree) {
+        if ($item.type -eq "blob") {
+            $localFilePath = Join-Path -Path $targetDirectory -ChildPath $item.path
+            if (-not (Test-Path -Path $localFilePath)) {
+                $allFilesDownloaded = $false
+                break
+            }
+        }
     }
 }
 
