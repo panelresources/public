@@ -7,7 +7,7 @@ $credentials = Read-Host "Enter your GitHub Personal Access Token"
 
 # Specify the repository and target directory
 $repo = "panelresources/edbot"
-$targetDirectory = "$env:USERPROFILE\Documents\GitHub\edbot"
+$targetDirectory = "$env:USERPROFILE\Documents\GitHub"
 
 # Create the target directory if it doesn't exist
 if (-not (Test-Path $targetDirectory)) {
