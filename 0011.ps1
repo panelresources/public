@@ -55,32 +55,20 @@ wsl --install -d Ubuntu-22.04
 
 
 Write-Host "Download and Install Docker Desktop"
-# Download the Docker Desktop installer
+# Download and Install Docker Desktop
 $installerUrl = "https://desktop.docker.com/win/stable/Docker%20Desktop%20Installer.exe"
 $installerPath = "$env:TEMP\DockerDesktopInstaller.exe"
 
+# Download the Docker Desktop installer
 Invoke-WebRequest -Uri $installerUrl -OutFile $installerPath
 
-# Install Docker Desktop silently
-Start-Process -FilePath $installerPath -ArgumentList "install --quiet" -Wait -NoNewWindow
+# Install Docker Desktop silently with auto-acceptance of the license
+Start-Process -FilePath $installerPath -ArgumentList "install --quiet --accept-license" -Wait -NoNewWindow
 
 # Clean up the installer
 Remove-Item -Path $installerPath
 
 
-#if (-not (Get-Command choco.exe -ErrorAction SilentlyContinue)) {
-#    Set-ExecutionPolicy Bypass -Scope Process -Force
-#    [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072
-#    iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
-#}
-
-# List of packages to install
-#$packages = 'git'
-
-# Install each package silently
-#foreach ($package in $packages) {
-#    choco install $package -y
-#}
 
 
 # Set the path to your Dockerfile (adjust as needed)
