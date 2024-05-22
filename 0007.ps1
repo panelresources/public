@@ -77,6 +77,6 @@ $imageName = "edbot_test"
 
 
 # Build the Docker image
-docker build -t $imageName -f $dockerfilePath .
+C:\Program Files\Docker\Docker\resources\bin\docker build -t $imageName -f $dockerfilePath .
 
-docker run -it --rm -d -v $env:USERPROFILE\Documents\GitHub\edbot\:/app -v \wsl.localhost\Ubuntu-22.04\mnt\wslg:/tmp -p 80:80 -p 1883:1883 -p 9001:9001 edbot_test
+C:\Program Files\Docker\Docker\resources\bin\docker run -it --rm -d -v $env:USERPROFILE\Documents\GitHub\edbot\:/app -v \wsl.localhost\Ubuntu-22.04\mnt\wslg:/tmp -p 80:80 -p 1883:1883 -p 9001:9001 edbot_test
