@@ -23,7 +23,6 @@ foreach ($item in $response.tree) {
         Invoke-WebRequest -Uri $downloadUrl -Headers @{ "Authorization" = "token $credentials" } -OutFile $localFilePath
     }
 }
-
 Write-Host "All files downloaded successfully to $targetDirectory!"
 
 
@@ -32,6 +31,8 @@ wsl --install
 
 # Set WSL 2 as the default version
 wsl --set-default-version 2
+wsl --install -d Ubuntu-22.04
+wsl --set-default Ubuntu-22.04
 
 
 Write-Host "Download and Install Docker Desktop"
