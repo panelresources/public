@@ -1,6 +1,6 @@
 # Edbot Environment Auto Install Script
 
-1. Run in Terminal (Admin) => "irm https://raw.githubusercontent.com/panelresources/public/main/edbot_install.ps1 | iex"
+1. Run in Terminal (Admin) => <br> "irm https://raw.githubusercontent.com/panelresources/public/main/edbot_install.ps1 | iex"
 
 2. Enter the token when asked
 
