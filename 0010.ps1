@@ -32,11 +32,16 @@ Invoke-WebRequest -Uri $zipUrl -Headers @{ "Authorization" = "token $credentials
 # Extract the zip file to the target directory
 Expand-Archive -Path $zipFilePath -DestinationPath $targetDirectory
 
+# Get the name of the top-level directory
+$extractedDirName = Get-ChildItem -Path $targetDirectory | Select-Object -First 1
+
+# Rename the top-level directory to 'edbot'
+Rename-Item -Path (Join-Path -Path $targetDirectory -ChildPath $extractedDirName) -NewName "edbot"
+
 # Delete the zip file
 Remove-Item -Path $zipFilePath
 
-Write-Host "Repository downloaded, extracted, and zip file deleted successfully!"
-
+Write-Host "Repository downloaded, extracted, and top-level directory renamed to 'edbot' successfully!"
 
 
 
