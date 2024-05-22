@@ -84,7 +84,7 @@ $dockerfilePath = "$env:USERPROFILE\Documents\GitHub\edbot"
 # Set the desired image name and tag
 $imageName = "edbot_test"
 
-
+$env:Path += ";C:\Program Files\Docker\Docker\resources\bin\"
 # Build the Docker image
-"C:\Program Files\Docker\Docker\resources\bin\docker" build -t $imageName -f $dockerfilePath .
-"C:\Program Files\Docker\Docker\resources\bin\docker" run -it --rm -d -v $env:USERPROFILE\Documents\GitHub\edbot\:/app -v \wsl.localhost\Ubuntu-22.04\mnt\wslg:/tmp -p 80:80 -p 1883:1883 -p 9001:9001 edbot_test
+docker build -t $imageName -f $dockerfilePath .
+docker run -it --rm -d -v $env:USERPROFILE\Documents\GitHub\edbot\:/app -v \wsl.localhost\Ubuntu-22.04\mnt\wslg:/tmp -p 80:80 -p 1883:1883 -p 9001:9001 edbot_test
