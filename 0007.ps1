@@ -6,6 +6,14 @@ $credentials = Read-Host "Enter your GitHub Personal Access Token"
 $repo = "panelresources/edbot"
 $targetDirectory = "$env:USERPROFILE\Documents\GitHub\edbot"
 
+New-Item -ItemType Directory -Path $targetDirectory
+# Check if the directory was created successfully
+if (Test-Path $targetDirectory) {
+    Write-Host "Directory created successfully at $targetDirectory"
+} else {
+    Write-Host "Failed to create the directory"
+}
+
 # Construct the URL for the zipball (archive)
 $zipUrl = "https://api.github.com/repos/$repo/zipball/main"
 
