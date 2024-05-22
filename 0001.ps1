@@ -48,17 +48,27 @@ Start-Process -FilePath $installerPath -ArgumentList "install --quiet" -Wait -No
 Remove-Item -Path $installerPath
 
 
-
-if (-not (Get-Command choco.exe -ErrorAction SilentlyContinue)) {
-    Set-ExecutionPolicy Bypass -Scope Process -Force
-    [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072
-    iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
-}
+#if (-not (Get-Command choco.exe -ErrorAction SilentlyContinue)) {
+#    Set-ExecutionPolicy Bypass -Scope Process -Force
+#    [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072
+#    iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+#}
 
 # List of packages to install
-$packages = 'git'
+#$packages = 'git'
 
 # Install each package silently
-foreach ($package in $packages) {
-    choco install $package -y
-}
+#foreach ($package in $packages) {
+#    choco install $package -y
+#}
+
+
+# Set the path to your Dockerfile (adjust as needed)
+$dockerfilePath = "$env:USERPROFILE\Documents\GitHub\edbot"
+
+# Set the desired image name and tag
+$imageName = "my-docker-image"
+$imageTag = "latest"
+
+# Build the Docker image
+docker build -t "$imageName:$imageTag" -f $dockerfilePath .
