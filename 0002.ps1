@@ -2,8 +2,9 @@
 Write-Host "Starting the installation script for Edbot"
 Write-Host "Git Clone the Edbot Repository"
 
-$credentials = Get-Credential -Message "Please enter your credentials"
-#$credentials = "secret"
+#$credentials = Get-Credential -Message "Please enter your credentials"
+$credentials = Read-Host "Enter your GitHub Personal Access Token"
+
 $repo = "panelresources/edbot"
 $targetDirectory = "$env:USERPROFILE\Documents\GitHub\edbot"
 
