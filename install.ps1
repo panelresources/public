@@ -1,2 +1,2 @@
-REM installation script
+echo "REM installation script"
 echo "TEST"
