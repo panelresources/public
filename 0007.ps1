@@ -6,28 +6,20 @@ $credentials = Read-Host "Enter your GitHub Personal Access Token"
 $repo = "panelresources/edbot"
 $targetDirectory = "$env:USERPROFILE\Documents\GitHub\edbot"
 
-# Get the list of files and directories recursively
-$treeUrl = "https://api.github.com/repos/$repo/git/trees/main?recursive=1"
-$response = Invoke-WebRequest -Uri $treeUrl -Headers @{ "Authorization" = "token $credentials" } | ConvertFrom-Json
+# Construct the URL for the zipball (archive)
+$zipUrl = "https://api.github.com/repos/$repo/zipball/main"
 
-foreach ($item in $response.tree) {
-    if ($item.type -eq "blob") {
-        # Construct the local file path
-        $localFilePath = Join-Path -Path $targetDirectory -ChildPath $item.path
+# Download the zipball
+$zipFilePath = "$targetDirectory\repo.zip"
+Invoke-WebRequest -Uri $zipUrl -Headers @{ "Authorization" = "token $credentials" } -OutFile $zipFilePath
 
-        # Create the directory if it doesn't exist
-        $directory = [System.IO.Path]::GetDirectoryName($localFilePath)
-        if (-not (Test-Path -Path $directory)) {
-            New-Item -ItemType Directory -Path $directory | Out-Null
-        }
+# Extract the zip file
+Expand-Archive -Path $zipFilePath -DestinationPath $targetDirectory
 
-        # Download files
-        $downloadUrl = "https://raw.githubusercontent.com/$repo/main/$($item.path)"
-        Invoke-WebRequest -Uri $downloadUrl -Headers @{ "Authorization" = "token $credentials" } -OutFile $localFilePath
-    }
-}
+# Delete the zip file
+Remove-Item -Path $zipFilePath
 
-Write-Host "All files downloaded successfully to $targetDirectory!"
+Write-Host "Repository downloaded, extracted, and zip file deleted successfully!"
 
 
 
