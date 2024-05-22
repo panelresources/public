@@ -1,13 +1,8 @@
 # Display some text
 Write-Host "Starting the installation script for Edbot"
 
-# Specify the GitHub repository URL
-#$repoUrl = "https://github.com/ironmansoftware/plinqo"
-# Download the repository ZIP file
-#Invoke-WebRequest -Uri "$repoUrl/archive/refs/heads/main.zip" -OutFile "plinqo.zip"
-# Extract the ZIP file
-#Expand-Archive -Path "plinqo.zip" -DestinationPath "."
 
+Write-Host "Git Clone the Edbot Repository"
 
 $credentials = "<your_access_token>"
 $repo = "panelresources/edbot"
@@ -31,6 +26,14 @@ foreach ($item in $response.tree) {
 Write-Host "All files downloaded successfully to $targetDirectory!"
 
 
+# Install WSL 2
+wsl --install
+
+# Set WSL 2 as the default version
+wsl --set-default-version 2
+
+
+Write-Host "Download and Install Docker Desktop"
 # Download the Docker Desktop installer
 $installerUrl = "https://desktop.docker.com/win/stable/Docker%20Desktop%20Installer.exe"
 $installerPath = "$env:TEMP\DockerDesktopInstaller.exe"
