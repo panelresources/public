@@ -2,13 +2,33 @@
 Write-Host "Starting the installation script for Edbot"
 
 # Specify the GitHub repository URL
-$repoUrl = "https://github.com/ironmansoftware/plinqo"
-
+#$repoUrl = "https://github.com/ironmansoftware/plinqo"
 # Download the repository ZIP file
-Invoke-WebRequest -Uri "$repoUrl/archive/refs/heads/main.zip" -OutFile "plinqo.zip"
-
+#Invoke-WebRequest -Uri "$repoUrl/archive/refs/heads/main.zip" -OutFile "plinqo.zip"
 # Extract the ZIP file
-Expand-Archive -Path "plinqo.zip" -DestinationPath "."
+#Expand-Archive -Path "plinqo.zip" -DestinationPath "."
+
+
+$credentials = "<your_access_token>"
+$repo = "panelresources/edbot"
+$targetDirectory = "$env:USERPROFILE\Documents\GitHub\edbot"
+
+# Get the list of files and directories recursively
+$treeUrl = "https://api.github.com/repos/$repo/git/trees/main?recursive=1"
+$response = Invoke-WebRequest -Uri $treeUrl -Headers @{ "Authorization" = "token $credentials" } | ConvertFrom-Json
+
+foreach ($item in $response.tree) {
+    if ($item.type -eq "blob") {
+        # Construct the local file path
+        $localFilePath = Join-Path -Path $targetDirectory -ChildPath $item.path
+
+        # Download files
+        $downloadUrl = "https://raw.githubusercontent.com/$repo/main/$($item.path)"
+        Invoke-WebRequest -Uri $downloadUrl -Headers @{ "Authorization" = "token $credentials" } -OutFile $localFilePath
+    }
+}
+
+Write-Host "All files downloaded successfully to $targetDirectory!"
 
 
 # Download the Docker Desktop installer
